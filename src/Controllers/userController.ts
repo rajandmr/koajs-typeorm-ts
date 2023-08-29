@@ -1,5 +1,6 @@
 import { Context } from "koa";
 import { createUserSchema } from "../schemas/user.schema";
+import logger from "../utils/logger";
 
 const getAllUsers = async (ctx: Context) => {
   ctx.status = 200;
@@ -12,7 +13,12 @@ const createUser = async (ctx: Context) => {
     ctx.status = 201;
     ctx.body = payload;
   } catch (error) {
-    (ctx.status = 500), (ctx.body = error.message);
+    logger.error(`Error while creating user ${error}`);
+    ctx.status = 500;
+    ctx.body = {
+      success: false,
+      message: error?.message || "Internal Server Error",
+    };
   }
 };
 
