@@ -15,7 +15,7 @@ const createUser = async (ctx: Context) => {
     ctx.status = 201;
     ctx.body = payload;
   } catch (error) {
-    logger.error(`Error while creating user ${error}`);
+    logger.error(`Error while creating user: ${error}`);
     ctx.status = 500;
     ctx.body = {
       success: false,
