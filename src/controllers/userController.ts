@@ -11,7 +11,7 @@ const getAllUsers = async (ctx: Context) => {
 
 const createUser = async (ctx: Context) => {
   try {
-    const payload = createUserSchema.parse(ctx.request);
+    const payload = createUserSchema.parse(ctx.request).body;
     ctx.status = 201;
     ctx.body = payload;
   } catch (error) {
