@@ -4,7 +4,9 @@ import logger from "../utils/logger";
 
 const getAllUsers = async (ctx: Context) => {
   ctx.status = 200;
-  ctx.body = {};
+  ctx.body = {
+    users: [],
+  };
 };
 
 const createUser = async (ctx: Context) => {
