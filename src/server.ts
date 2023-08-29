@@ -1,22 +1,29 @@
 //* Server imports
-import * as Koa from 'koa';
-import * as Logger from 'koa-logger';
-import * as BodyParser from 'koa-bodyparser';
+import * as Koa from "koa";
+import * as BodyParser from "koa-bodyparser";
 //* Packages imports
-import { DefaultState, DefaultContext } from 'koa';
-import userRouter from './routes/userRoutes';
-import { createConnection } from 'typeorm';
+import { DefaultState, DefaultContext } from "koa";
+import userRouter from "./routes/userRoutes";
 
-createConnection()
-  .then(async (connection) => {
-    const app: Koa<DefaultState, DefaultContext> = new Koa();
+const app: Koa<DefaultState, DefaultContext> = new Koa();
 
-    //* Middlewares
-    app.use(BodyParser());
+//* Middlewares
+app.use(BodyParser());
 
-    //* Routes Declaration
-    app.use(userRouter.routes()).use(userRouter.allowedMethods());
+app.use(async (ctx) => {
+  ctx.body = "Hello World";
+  ctx.status = 200;
+});
 
-    app.listen(3000);
-  })
-  .catch((error) => console.log('TypeORM connection error; ', error));
+//* Routes Declaration
+app.use(userRouter.routes()).use(userRouter.allowedMethods());
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+app.on("error", (err) => {
+  console.error("server error", err);
+});
