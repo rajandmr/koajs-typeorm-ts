@@ -1,5 +1,5 @@
-import Validate from "../validations/UserSchema";
 import { Context } from "koa";
+import { createUserSchema } from "../schemas/user.schema";
 
 const getAllUsers = async (ctx: Context) => {
   ctx.status = 200;
@@ -7,16 +7,10 @@ const getAllUsers = async (ctx: Context) => {
 };
 
 const createUser = async (ctx: Context) => {
-  const request = ctx.request.body;
-  const valid = Validate(request);
-
-  if (valid !== true) {
-    ctx.status = 422;
-    ctx.body = valid;
-    return;
-  }
   try {
+    const payload = createUserSchema.parse(ctx.request);
     ctx.status = 201;
+    ctx.body = payload;
   } catch (error) {
     (ctx.status = 500), (ctx.body = error.message);
   }
