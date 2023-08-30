@@ -1,7 +1,6 @@
 import { Context } from "koa";
 import { createUserSchema } from "../schemas/user.schema";
 import logger from "../utils/logger";
-
 const getAllUsers = async (ctx: Context) => {
   ctx.status = 200;
   ctx.body = {
