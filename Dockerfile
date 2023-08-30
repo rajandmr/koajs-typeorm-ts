@@ -3,10 +3,12 @@ WORKDIR /app
 COPY . .
 RUN yarn install
 RUN yarn build
+RUN npx prisma migrate deploy
 
 FROM node:18-alpine AS final
 WORKDIR /app
 COPY --from=builder ./app/dist ./dist
+COPY --from=builder ./app/prisma ./prisma
 COPY package.json .
 COPY yarn.lock .
 RUN yarn install --production
