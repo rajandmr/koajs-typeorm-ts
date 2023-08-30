@@ -1,16 +1,24 @@
 import { Context } from "koa";
 import { createUserSchema } from "../schemas/user.schema";
 import logger from "../utils/logger";
+import { prisma } from "../utils/dbClient";
 const getAllUsers = async (ctx: Context) => {
   ctx.status = 200;
+
+  const users = await prisma.user.findMany();
+
   ctx.body = {
-    users: [],
+    users: users,
   };
 };
 
 const createUser = async (ctx: Context) => {
   try {
     const payload = createUserSchema.parse(ctx.request).body;
+
+    await prisma.user.create({
+      data: payload,
+    });
     ctx.status = 201;
     ctx.body = payload;
   } catch (error) {
